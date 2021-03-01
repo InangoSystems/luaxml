@@ -1,8 +1,12 @@
 # 2009-03-16 by gf
 #
 ifeq ($(PREFIX),)
-    PREFIX := /usr
+    override PREFIX := /usr
 endif
+
+# Path for installation Lua modules
+# Path is relative to $(DESTDIR)
+override LUAPATH ?= $(PREFIX)/lib/lua
 
 # generic compiler and linker settings:
 #CROSS_COMPILE=arm-openwrt-linux-uclibcgnueabi-
@@ -53,9 +57,9 @@ LuaXML_lib.o:  LuaXML_lib.c
 	$(CC) $(CFLAGS) $(INCDIR) -c $<
 
 install:
-	install -d $(DESTDIR)$(PREFIX)/lib/lua
-	install -m 644 LuaXML_lib.so $(DESTDIR)$(PREFIX)/lib/lua
-	install -m 755 LuaXml.lua    $(DESTDIR)$(PREFIX)/lib/lua
+	install -d $(DESTDIR)/$(LUAPATH)
+	install -m 644 LuaXML_lib.so $(DESTDIR)/$(LUAPATH)
+	install -m 755 LuaXml.lua    $(DESTDIR)/$(LUAPATH)
 
 clean:
 	rm -f *.o *~ LuaXML_lib.so LuaXML_lib.dll
